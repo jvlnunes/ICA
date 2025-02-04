@@ -68,7 +68,7 @@ def backpropagation_1_iteracao():
     print(f"Bias atualizados:  b1 = {b1:.4f}, b2 = {b2:.4f}")
     print(f"Erro total: {Etotal:.4f}")
 
-def run_backpropagation(learning_rate, tolerance):
+def backpropagation(learning_rate, tolerance):
     
     x1, x2 =  0.4 ,  0.1
     d1, d2 =  0.5 ,  0.7  
@@ -139,7 +139,7 @@ def analise_backpropagation():
                           "w1", "w2", "w3", "w4", "w5", "w6", "w7", "w8", "b1", "b2"]
     for lr in taxa_de_aprendizagem:
         for tol in tolerancia:
-            epocas, Etotal, w1, w2, w3, w4, w5, w6, w7, w8, b1, b2 = run_backpropagation(lr, tol)
+            epocas, Etotal, w1, w2, w3, w4, w5, w6, w7, w8, b1, b2 = backpropagation(lr, tol)
             tabela.add_row([
                 lr, tol, epocas, round(Etotal, 6),
                 round(w1, 4), round(w2, 4), round(w3, 4), round(w4, 4),

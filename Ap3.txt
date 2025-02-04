@@ -1,0 +1,32 @@
+2º AP – Faça os “Projeto Práticos”, páginas 164-172, seções 5.8, 5.9 e 5.10 do texto RNA para Eng., 
+Ivan N da Silva, cap5, Redes Perceptron Multicamadas.pdf disponível no SIGAA. 
+O Apêndice III com o nome RNparaEng-IvanNdaSilva-Apendice_III.zip também está disponível em forma de planilha no SIGAA.
+Podendo usar MLP MATLAB, M. Fernades.zip (programa do MLP em MATLAB elaborado M. Fernandes baseado no algoritmo do Ivan N. da Silva), também está disponível no SIGAA.
+Ou pode usar qualquer outro programa em qualquer linguagem de programação
+
+Solução do  Projeto prático 1 (aproximação de funções) seção 5.8 do livro texto
+
+Com 
+    neurônios = 5
+    precisão  = 1e-6
+    epocas    = 1000
+    taxa de aprendizagem = 0.01
++---------------+-----------------------------------------------------------------+-----------------+
+| Arquivo       | Pesos Finais                                                    | Biases Finais   |
++===============+=================================================================+=================+
+| Seção5.8_RNA  | [[ 0.25274075 -0.26229772 -0.0737978 ]                          | [[ 0.04934122]  |
+|               |  [-0.04630294  0.28195855 -0.35315308]                          |  [ 0.10642988]  |
+|               |  [-0.2629673  -0.11214398 -0.28276711]                          |  [-0.38945177]  |
+|               |  [-0.2164869   0.32917718  0.13573704]                          |  [ 0.45719807]  |
+|               |  [-0.37616912 -0.35581295  0.13090512]]                         |  [-0.01757518]] |
+|               | [[-0.08691471 -0.23755635  0.15053065  0.62928827 -0.33756442]] | [[0.36104414]]  |
++---------------+-----------------------------------------------------------------+-----------------+
+
+Solução do Projeto prático 2 (classificação de padrões) - 
+                              <<  fazer aqui >>
+Solução do Projeto prático 3 (sistemas variantes no tempo) seção 5.10 do livro texto
+                              <<  fazer aqui >>
+
+Enviar em arquivo anexo: Programa de computação utilizado, se Diferente do que foi disponibilizado.
+
+                            
