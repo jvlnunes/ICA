@@ -18,19 +18,19 @@ try:
     file_path = arquivos_treinamento[0]['caminho_windows'] 
     X, Y = load_data(file_path)
     
-except:
-    file_path = arquivos_treinamento[0]['caminho_linux'] 
-    X, Y = load_data(file_path)
+except Exception as e :
+    print(e)
+    # file_path = arquivos_treinamento[0]['caminho_linux'] 
+    # X, Y = load_data(file_path)
     
 resultados = []
 treinos    = []
-
 # Treinamentos 
 for i in range(5):
     try:
-        neuronios = 25
-        taxa_aprendizagem = 0.0001
-        precisao = 1e-10    
+        neuronios = 5
+        taxa_aprendizagem = 0.1
+        precisao = 1e-6
         W1, B1, W2, B2, mse, epocas, W1_inicial, W2_inicial, erro_x_epocas = treinamento_pmc(X, Y, neuronios=neuronios, precisao=precisao, taxa_aprendizagem=taxa_aprendizagem)
         
         treinos.append({
