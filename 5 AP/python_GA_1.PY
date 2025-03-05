@@ -39,9 +39,9 @@ def GA_1():
         if min(obj_v) < 0:
             fitness = fitness - min(obj_v)
             
-        numsel = int(nind * 0.9)
-        prob = fitness / np.sum(fitness)
-        selected = np.random.choice(nind, numsel, p=prob)
+        numsel    = int(nind * 0.9)
+        prob      = fitness / np.sum(fitness)
+        selected  = np.random.choice(nind, numsel, p=prob)
         new_chrom = chrom[selected]
         
         for i in range(0, numsel-1, 2):
@@ -58,13 +58,14 @@ def GA_1():
         # Update population
         if nind > numsel:
             indices = np.argsort(fitness)[::-1][:nind-numsel]
-            chrom = np.vstack((chrom[indices], new_chrom))
-            x = np.concatenate((x[indices], new_x))
-            obj_v = np.concatenate((obj_v[indices], new_obj_v))
+            chrom   = np.vstack((chrom[indices], new_chrom))
+            x       = np.concatenate((x[indices], new_x))
+            obj_v   = np.concatenate((obj_v[indices], new_obj_v))
+            
         else:
-            chrom = new_chrom
-            x = new_x
-            obj_v = new_obj_v
+            chrom   = new_chrom
+            x       = new_x
+            obj_v   = new_obj_v
             
         best.append(max(obj_v))
         ave.append(np.mean(obj_v))

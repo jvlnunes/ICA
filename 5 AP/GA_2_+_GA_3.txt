@@ -1,0 +1,97 @@
+Case study: maintenance scheduling
+    . Maintenance scheduling problems are usually
+    solved using a combination of search techniques
+    and heuristics.
+
+    . These problems are complex and difficult to solve.
+
+    . They are NP-complete and cannot be solved by
+    combinatorial search techniques.
+
+    . Scheduling involves competition for limited
+    resources, and is complicated by a great number
+    of badly formalised constraints.
+
+
+Steps in the GA development
+    1. Specify the problem, define constraints and 
+    optimum criteria;
+
+    2. Represent the problem domain as a chromosome;
+
+    3. Define a fitness function to evaluate the
+    chromosome performance;
+
+    4. Construct the genetic operators;
+    5. Run the GA and tune its parameters.
+
+Case Study:
+    Scheduling of 7 units in 4 equal intervals
+
+    The problem constraints:
+        . The maximum loads expected during four intervals are
+        80, 90, 65 and 70 MW
+
+        . Maintenance of any unit starts at the beginning of an
+        interval and finishes at the end of the same or adjacent
+        interval. The maintenance cannot be aborted or finished
+        earlier than scheduled;
+
+        . The net reserve of the power system must be greater or
+        equal to zero at any interval.
+
+    The optimum criterion is the maximum of the net reserve at any maintenance period.
+
+
+    Unit data and maintenance requirements  (Table)
+    Unit number  , Unit capacity(MW), Number of intervals required for unit maintenance
+         1       ,         20       ,            2
+         2       ,         15       ,            2
+         3       ,         35       ,            1
+         4       ,         40       ,            1
+         5       ,         15       ,            1
+         6       ,         15       ,            1
+         7       ,         10       ,            1
+
+    Unit gene pools:
+
+        unit 1: [1 1 0 0] [0 1 1 0] [0 0 1 1]
+        unit 2: [1 1 0 0] [0 1 1 0] [0 0 1 1]
+        unit 3: [1 0 0 0] [0 1 0 0] [0 0 1 0] [0 0 0 1]
+        unit 4: [1 0 0 0] [0 1 0 0] [0 0 1 0] [0 0 0 1]
+        unit 5: [1 0 0 0] [0 1 0 0] [0 0 1 0] [0 0 0 1]
+        unit 6: [1 0 0 0] [0 1 0 0] [0 0 1 0] [0 0 0 1]
+        unit 7: [1 0 0 0] [0 1 0 0] [0 0 1 0] [0 0 0 1]
+
+    Chromosome for the scheduling problem:
+        unit 1: [0 1 1 0] 
+        unit 2: [0 0 1 1]
+        unit 3: [0 0 0 1]
+        unit 4: [1 0 0 0]
+        unit 5: [0 1 0 0]
+        unit 6: [0 0 1 0]
+        unit 7: [1 0 0 0]
+    
+        [0 1 1 0] [0 0 1 1] [0 0 0 1] [1 0 0 0] [0 1 0 0] [0 0 1 0] [1 0 0 0]
+
+    The crossover operator:
+        Parent 1:
+            0110 0011 0001 1000 | 0100 0010 1000
+
+        Parent 2:
+            1100 0110 0100 0001 | 0010 1000 0100
+
+        Child 1:
+            0110 0011 0001 1000 | 0010 1000 0100
+
+        Child 2:
+            1100 0110 0100 0001 | 0100 0010 1000
+
+    The mutation operator:
+
+        1100 0110 0100 0001 0100 0010 1000
+                    x
+                    |
+                    V
+        1100 0110 0001 0001 0100 0010 1000                  
+    
