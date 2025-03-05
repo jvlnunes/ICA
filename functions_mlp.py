@@ -1,5 +1,5 @@
-import numpy as np
-from tabulate import tabulate
+import numpy    as np
+from   tabulate import tabulate
 
 def sigmoide(x):
     return 1 / (1 + np.exp(-x))

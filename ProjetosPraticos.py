@@ -1,35 +1,37 @@
-from functions_mlp import *
+from   functions_mlp     import *
 import matplotlib.pyplot as plt
 
 arquivos_treinamento = [
-    {'nome': 'Seção5.8_RNA' , 'caminho_windows':"Dados\\Treinamento\\Tabela#Seção5.8_RNA.txt" , 'caminho_linux':"Dados/Treinamento/Tabela#Seção5.8_RNA.txt" },
-    {'nome': 'Seção5.9_RNA' , 'caminho_windows':"Dados\\Treinamento\\Tabela#Seção5.9_RNA.txt" , 'caminho_linux':"Dados/Treinamento/Tabela#Seção5.9_RNA.txt" },
-    {'nome': 'Seção5.10_RNA', 'caminho_windows':"Dados\\Treinamento\\Tabela#Seção5.10_RNA.txt", 'caminho_linux':"Dados/Treinamento/Tabela#Seção5.8_RNA.txt" }
+    {   'nome': 'Seção5.8_RNA' , 'caminho': "Dados/Treinamento/Tabela#Seção5.8_RNA.txt"    },
+    {   'nome': 'Seção5.9_RNA' , 'caminho': "Dados/Treinamento/Tabela#Seção5.9_RNA.txt"    },
+    {   'nome': 'Seção5.10_RNA', 'caminho': "Dados/Treinamento/Tabela#Seção5.10_RNA.txt"   }
 ]
 
 arquivos_teste = [
-    {'nome': '5.3_RNA' , 'caminho_windows':"Dados\\Teste\\Tabela#5.3_RNA.txt" , 'caminho_linux':"Dados/Teste/Tabela#5.3_RNA.txt" },
-    {'nome': '5.5_RNA' , 'caminho_windows':"Dados\\Teste\\Tabela#5.5_RNA.txt" , 'caminho_linux':"Dados/Teste/Tabela#5.5_RNA.txt" },
-    {'nome': '5.7_RNA' , 'caminho_windows':"Dados\\Teste\\Tabela#5.7_RNA.txt" , 'caminho_linux':"Dados/Teste/Tabela#5.7_RNA.txt" }
+    {   'nome': '5.3_RNA'      , 'caminho': "Dados/Teste/Tabela#5.3_RNA.txt"               },
+    {   'nome': '5.5_RNA'      , 'caminho': "Dados/Teste/Tabela#5.5_RNA.txt"               },
+    {   'nome': '5.7_RNA'      , 'caminho': "Dados/Teste/Tabela#5.7_RNA.txt"               }
 ]
 
 print("Projeto prático 01")
 try:
-    file_path = arquivos_treinamento[0]['caminho_windows'] 
+    file_path = arquivos_treinamento[0]['caminho'].replace('/', '\\')
     X, Y = load_data(file_path)
+    print('SO identificado: Windows')
     
-except Exception as e :
-    print(e)
-    # file_path = arquivos_treinamento[0]['caminho_linux'] 
-    # X, Y = load_data(file_path)
+except Exception as e:
+    file_path = arquivos_treinamento[0]['caminho']
+    X, Y = load_data(file_path)
+    print('SO identificado: Linux') 
+
     
 resultados = []
 treinos    = []
-# Treinamentos 
+
 for i in range(5):
     try:
         neuronios = 5
-        taxa_aprendizagem = 0.1
+        taxa_aprendizagem = 0.01
         precisao = 1e-6
         W1, B1, W2, B2, mse, epocas, W1_inicial, W2_inicial, erro_x_epocas = treinamento_pmc(X, Y, neuronios=neuronios, precisao=precisao, taxa_aprendizagem=taxa_aprendizagem)
         
@@ -55,6 +57,7 @@ for i in range(5):
         print(e)
 
 colunas = ["Treino", "Erro quadrático médio", "Epocas"]
+print('\nTabela de resultados do Treinamento:')
 print(tabulate(resultados, headers=colunas, tablefmt="pretty"))
     
 maiores_epocas = sorted(treinos, key=lambda x: x['epocas'], reverse=True)[:2]
@@ -85,41 +88,12 @@ for treino in maiores_epocas:
     plt.show()
     
 try:
-    X_teste, Y_teste = load_data(arquivos_teste[0]['caminho_windows'])
+    X_teste, Y_teste = load_data(arquivos_teste[0]['caminho'].replace('/', '\\'))
     resultados, erros_medios, variancias = teste_pmc(X_teste, Y_teste, treinos)
     
 except:
-    X_teste, Y_teste = load_data(arquivos_teste[0]['caminho_linux'  ])
+    X_teste, Y_teste = load_data(arquivos_teste[0]['caminho'])
     resultados, erros_medios, variancias = teste_pmc(X_teste, Y_teste, treinos)
 
-# for resultado in resultados:
-#     y         = resultado['Y_pred']
-#     erro      = resultado['erro_medio']
-#     variancia = resultado['variancia']
-    
+print("\nTabela de resultados dos testes:")
 imprimir_resultados(resultados, erros_medios, variancias)
-# colunas = ["Treino", "Erro Médio (%)", "Variância"]
-# print(tabulate(resultados, headers="keys", tablefmt="pretty"))
-
-
-
-# for arquivo in arquivos_treinamento:
-#     X, Y = load_data(arquivo['caminho'])
-
-#     entrada = X.shape[1]
-#     saída   = Y.shape[1]
-
-#     neurônios = 5
-#     epocas = 1000
-#     taxa = 0.01
-#     prec = 1e-6
-
-#     weights, biases = treinamento(X, Y, layers=[entrada, neurônios, saída],epocas=epocas,taxa_aprendizagem=taxa,precisao=prec)
-#     # print(f' {arquivo["nome"]}\n weights = {weights}\n biases = {biases} ')
-
-#     p.append(weights)
-#     b.append(biases)
-#     pesos_finais  = formatar_array(weights)
-#     biases_finais = formatar_array(biases)
-
-#     resultados.append([arquivo['nome'], str(pesos_finais), str(biases_finais)])
