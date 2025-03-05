@@ -9,33 +9,33 @@ def GA_2():
     
     # Define parameters
     obj_fun = "(1-x)**2 * np.exp(-x**2-(y+1)**2) - (x-x**3-y**5) * np.exp(-x**2-y**2)"
-    nind = 6      # Population size
-    nvar = 2      # Number of variables
-    ngenes = 16   # Number of genes in chromosome
-    pc = 0.9      # Crossover probability
-    pm = 0.005    # Mutation probability
-    xymin = -3    # Minimum values for x and y
-    xymax = 3     # Maximum values for x and y
-    ngener = 100  # Number of generations
+    nind    = 6         # Population size
+    nvar    = 2         # Number of variables
+    ngenes  = 16        # Number of genes in chromosome
+    pc      = 0.9       # Crossover probability
+    pm      = 0.005     # Mutation probability
+    xymin   = -3        # Minimum values for x and y
+    xymax   = 3         # Maximum values for x and y
+    ngener  = 100       # Number of generations
     
     # Generate initial population
     chrom = np.random.randint(2, size=(nind, ngenes))
     
     # Decode chromosomes
-    lvar = ngenes // nvar
-    xy = np.zeros((nind, nvar))
+    lvar   = ngenes // nvar
+    xy     = np.zeros((nind, nvar))
     powers = 2 ** np.arange(lvar-1, -1, -1)
     
     for ind in range(nvar):
-        start = lvar * ind
-        end = lvar * (ind + 1)
+        start      = lvar * ind
+        end        = lvar * (ind + 1)
         xy[:, ind] = np.dot(chrom[:, start:end], powers)
         xy[:, ind] = xymin + (xymax - xymin) * (xy[:, ind] + 1) / (2**lvar + 1)
     
     # Calculate initial fitness
     obj_v = eval_obj_fun(obj_fun, xy[:, 0], xy[:, 1])
-    best = [max(obj_v)]
-    ave = [np.mean(obj_v)]
+    best  = [max(obj_v)]
+    ave   = [np.mean(obj_v)]
     
     # Create mesh for surface plot
     x, y = np.meshgrid(np.arange(xymin, xymax, 0.25), np.arange(xymin, xymax, 0.25))
@@ -43,7 +43,7 @@ def GA_2():
     
     # Main GA loop
     fig = plt.figure()
-    ax = fig.add_subplot(111, projection='3d')
+    ax  = fig.add_subplot(111, projection='3d')
     
     for gen in range(ngener):
         # Fitness evaluation
@@ -52,9 +52,9 @@ def GA_2():
             fitness = fitness - min(obj_v)
             
         # Selection
-        numsel = int(nind * 0.8)
-        prob = fitness / np.sum(fitness)
-        selected = np.random.choice(nind, numsel, p=prob)
+        numsel    = int(nind * 0.8)
+        prob      = fitness / np.sum(fitness)
+        selected  = np.random.choice(nind, numsel, p=prob)
         new_chrom = chrom[selected]
         
         # Crossover
@@ -71,7 +71,7 @@ def GA_2():
         new_xy = np.zeros((numsel, nvar))
         for ind in range(nvar):
             start = lvar * ind
-            end = lvar * (ind + 1)
+            end   = lvar * (ind + 1)
             new_xy[:, ind] = np.dot(new_chrom[:, start:end], powers)
             new_xy[:, ind] = xymin + (xymax - xymin) * (new_xy[:, ind] + 1) / (2**lvar + 1)
         
@@ -80,12 +80,12 @@ def GA_2():
         # Update population
         if nind > numsel:
             indices = np.argsort(fitness)[::-1][:nind-numsel]
-            chrom = np.vstack((chrom[indices], new_chrom))
-            xy = np.vstack((xy[indices], new_xy))
-            obj_v = np.concatenate((obj_v[indices], new_obj_v))
+            chrom   = np.vstack((chrom[indices], new_chrom))
+            xy      = np.vstack((xy[indices], new_xy))
+            obj_v   = np.concatenate((obj_v[indices], new_obj_v))
         else:
             chrom = new_chrom
-            xy = new_xy
+            xy    = new_xy
             obj_v = new_obj_v
             
         best.append(max(obj_v))

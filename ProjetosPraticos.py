@@ -70,6 +70,7 @@ for treino in maiores_epocas:
     #     Pesos Iniciais:
     #         W1 = {treino['W1_inicial']}
     #         W2 = {treino['W2_inicial']}
+    
     #     Pesos Finais:
     #         W1 = {treino['W1']}
     #         W2 = {treino['W2']}

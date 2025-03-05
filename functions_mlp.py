@@ -126,13 +126,13 @@ def imprimir_resultados(resultados, erros_medios, variancias):
             f"{float(resultados['x1'][i]):.6f}", 
             f"{float(resultados['x2'][i]):.6f}", 
             f"{float(resultados['x3'][i]):.6f}", 
-            f"{float(resultados['d'][i][0]):.6f}"  # <-- Correção aqui!
+            f"{float(resultados['d'][i][0]):.6f}" 
         ] + [f"{float(resultados[f'y (T{j+1})'][i]):.6f}" for j in range(len(erros_medios))]
         
         tabela.append(linha)
 
     tabela.append(["Erro relativo médio (%)", "-", "-", "-", "-"] + [f"{erro:.6f}" for erro in erros_medios])
-    tabela.append(["Variância (%)", "-", "-", "-", "-"] + [f"{var:.6f}" for var in variancias])
+    tabela.append(["Variância (%)", "-", "-", "-", "-"]           + [f"{var:.6f}"  for var  in variancias  ])
 
     print(tabulate(tabela, headers=colunas, tablefmt="pretty"))
 

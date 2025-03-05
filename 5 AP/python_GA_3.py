@@ -13,14 +13,14 @@ class MaintenanceScheduler:
             (15, 1),  # Unit 6
             (10, 1)   # Unit 7
         ]
-        self.max_loads = [80, 90, 65, 70]  # MW per interval
+        self.max_loads     = [80, 90, 65, 70]  # MW per interval
         self.num_intervals = 4
         
         # GA parameters
         self.population_size = 50
         self.num_generations = 100
         self.crossover_prob  = 0.9
-        self.mutation_prob = 0.01
+        self.mutation_prob   = 0.01
 
     def create_initial_population(self):
         population = []
