@@ -2,15 +2,15 @@ from   functions_mlp     import *
 import matplotlib.pyplot as plt
 
 arquivos_treinamento = [
-    {   'nome': 'Seção5.8_RNA' , 'caminho': "Dados/Treinamento/Tabela#Seção5.8_RNA.txt"    },
-    {   'nome': 'Seção5.9_RNA' , 'caminho': "Dados/Treinamento/Tabela#Seção5.9_RNA.txt"    },
-    {   'nome': 'Seção5.10_RNA', 'caminho': "Dados/Treinamento/Tabela#Seção5.10_RNA.txt"   }
+    {'nome': 'Seção5.8_RNA' , 'caminho': "Dados/Treinamento/Tabela#Seção5.8_RNA.txt"  },
+    {'nome': 'Seção5.9_RNA' , 'caminho': "Dados/Treinamento/Tabela#Seção5.9_RNA.txt"  },
+    {'nome': 'Seção5.10_RNA', 'caminho': "Dados/Treinamento/Tabela#Seção5.10_RNA.txt" }
 ]
 
 arquivos_teste = [
-    {   'nome': '5.3_RNA'      , 'caminho': "Dados/Teste/Tabela#5.3_RNA.txt"               },
-    {   'nome': '5.5_RNA'      , 'caminho': "Dados/Teste/Tabela#5.5_RNA.txt"               },
-    {   'nome': '5.7_RNA'      , 'caminho': "Dados/Teste/Tabela#5.7_RNA.txt"               }
+    {'nome': '5.3_RNA', 'caminho': "Dados/Teste/Tabela#5.3_RNA.txt" },
+    {'nome': '5.5_RNA', 'caminho': "Dados/Teste/Tabela#5.5_RNA.txt" },
+    {'nome': '5.7_RNA', 'caminho': "Dados/Teste/Tabela#5.7_RNA.txt" }
 ]
 
 print("Projeto prático 01")
@@ -33,7 +33,7 @@ for i in range(5):
         neuronios = 5
         taxa_aprendizagem = 0.01
         precisao = 1e-6
-        W1, B1, W2, B2, mse, epocas, W1_inicial, W2_inicial, erro_x_epocas = treinamento_pmc(X, Y, neuronios=neuronios, precisao=precisao, taxa_aprendizagem=taxa_aprendizagem)
+        W1, B1, W2, B2, mse, epocas, W1_inicial, W2_inicial, erro_x_epocas = treinamento_pmc_1(X, Y, neuronios=neuronios, precisao=precisao, taxa_aprendizagem=taxa_aprendizagem)
         
         treinos.append({
             'i'            : i,
@@ -53,6 +53,7 @@ for i in range(5):
             mse,
             epocas
         ])
+        
     except Exception as e:
         print(e)
 
@@ -94,7 +95,9 @@ try:
     
 except:
     X_teste, Y_teste = load_data(arquivos_teste[0]['caminho'])
-    resultados, erros_medios, variancias = teste_pmc(X_teste, Y_teste, treinos)
+    resultados, erros_medios, variancias, maes, mses = teste_pmc(X_teste, Y_teste, treinos)
 
 print("\nTabela de resultados dos testes:")
-imprimir_resultados(resultados, erros_medios, variancias)
+
+# Imprimir os resultados
+imprimir_resultados(resultados, erros_medios, variancias, maes, mses)
