@@ -2,15 +2,11 @@ from   functions_mlp     import *
 import matplotlib.pyplot as plt
 
 arquivos_treinamento = [
-    {'nome': 'Seção5.8_RNA' , 'caminho': "Dados/Treinamento/Tabela#Seção5.8_RNA.txt"  },
-    {'nome': 'Seção5.9_RNA' , 'caminho': "Dados/Treinamento/Tabela#Seção5.9_RNA.txt"  },
-    {'nome': 'Seção5.10_RNA', 'caminho': "Dados/Treinamento/Tabela#Seção5.10_RNA.txt" }
+    {'nome': 'Seção5.8_RNA' , 'caminho': "3 AP/Dados/Treinamento/Tabela#Seção5.8_RNA.txt"  }
 ]
 
 arquivos_teste = [
-    {'nome': '5.3_RNA', 'caminho': "Dados/Teste/Tabela#5.3_RNA.txt" },
-    {'nome': '5.5_RNA', 'caminho': "Dados/Teste/Tabela#5.5_RNA.txt" },
-    {'nome': '5.7_RNA', 'caminho': "Dados/Teste/Tabela#5.7_RNA.txt" }
+    {'nome': '5.3_RNA', 'caminho': "3 AP/Dados/Teste/Tabela#5.3_RNA.txt" }
 ]
 
 print("Projeto prático 01")

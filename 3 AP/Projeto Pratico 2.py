@@ -4,7 +4,7 @@ from   functions_mlp     import *
 import matplotlib.pyplot as plt
 
 arquivos_treinamento = [
-    {'nome': 'Seção5.9_RNA' , 'caminho': "Dados/Treinamento/Tabela#Seção5.9_RNA.txt"  }
+    {'nome': 'Seção5.9_RNA' , 'caminho': "3 AP/Dados/Treinamento/Tabela#Seção5.9_RNA.txt"  }
 ]
 
 print("Projeto prático 02")
@@ -133,7 +133,7 @@ print(Y_pos)
 print('\nResultados Questão 5:')
 
 arquivos_teste = [
-    {'nome': '5.5_RNA', 'caminho': "Dados/Teste/Tabela#5.5_RNA.txt" }
+    {'nome': '5.5_RNA', 'caminho': "3 AP/Dados/Teste/Tabela#5.5_RNA.txt" }
 ]
 
 try:

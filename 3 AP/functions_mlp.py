@@ -1,9 +1,17 @@
 import time
-import numpy    as np
-from   tabulate import tabulate
+import numpy as np
+
+from tabulate   import tabulate
+from matplotlib import pyplot    as plt
 
 def sigmoide(x):
     return 1 / (1 + np.exp(-x))
+
+def sigmoide(x):
+    # Clip the input to avoid overflow
+    x = np.clip(x, -709, 709)  # np.exp can handle values in this range
+    return 1 / (1 + np.exp(-x))
+
 
 def derivada_sigmoide(x):
     return x * (1 - x)
@@ -312,27 +320,6 @@ def teste_pmc(X_teste, Y_teste, treinamentos):
     
     return resultados, erros_medios, variancias, maes, mses
 
-
-# def imprimir_resultados(resultados, erros_medios, variancias):
-#     colunas = ["Amostra", "x1", "x2", "x3", "d"] + [f"y (T{i+1})" for i in range(len(erros_medios))]
-
-#     tabela = []
-#     for i in range(len(resultados["Amostra"])):
-#         linha = [
-#             resultados["Amostra"][i], 
-#             f"{float(resultados['x1'][i]):.6f}", 
-#             f"{float(resultados['x2'][i]):.6f}", 
-#             f"{float(resultados['x3'][i]):.6f}", 
-#             f"{float(resultados['d'][i][0]):.6f}" 
-#         ] + [f"{float(resultados[f'y (T{j+1})'][i]):.6f}" for j in range(len(erros_medios))]
-        
-#         tabela.append(linha)
-
-#     tabela.append(["Erro relativo médio (%)", "-", "-", "-", "-"] + [f"{erro:.6f}" for erro in erros_medios])
-#     tabela.append(["Variância (%)", "-", "-", "-", "-"]           + [f"{var:.6f}"  for var  in variancias  ])
-
-#     print(tabulate(tabela, headers=colunas, tablefmt="pretty"))
-
 def imprimir_resultados(resultados, erros_medios, variancias, maes, mses):
     colunas = ["Amostra", "x1", "x2", "x3", "d"] + [f"y (T{i+1})" for i in range(len(erros_medios))]
 
@@ -356,14 +343,184 @@ def imprimir_resultados(resultados, erros_medios, variancias, maes, mses):
     print(tabulate(tabela, headers=colunas, tablefmt="pretty"))
 
 def pos_processamento(Y_pred):
-    """
-        Realiza o pós-processamento das saídas da rede.
-        Arredonda os valores para 0 ou 1 com base no critério de arredondamento simétrico.
-        
-        Parâmetros:
-            Y_pred (numpy array): Saídas da rede (valores reais).
-        
-        Retorna:
-            numpy array: Saídas pós-processadas (valores inteiros 0 ou 1).
-    """
     return np.where(Y_pred >= 0.5, 1, 0)
+
+def exibir_resultados_treinamentos(resultados_treinamentos):
+    """
+    Exibe os resultados dos treinamentos em uma tabela formatada.
+    """
+    # headers = ["Treinamento", "TDNN 1", "", "TDNN 2", "", "TDNN 3", ""]
+    # subheaders = ["", "E_M", "Êpocas", "E_M", "Êpocas", "E_M", "Êpocas"]
+    headers = ["Treinamento", "E_M", "Épocas", "E_M", "Épocas", "E_M", "Épocas"]     
+
+    dados = []
+    for i in range(3):  # Para cada treinamento (1°, 2°, 3°)
+        linha = [
+            f"{i+1}° (T{i+1})",
+            resultados_treinamentos[0][i]['mse'],  # E_M para TDNN 1
+            resultados_treinamentos[0][i]['epocas'],  # Êpocas para TDNN 1
+            resultados_treinamentos[1][i]['mse'],  # E_M para TDNN 2
+            resultados_treinamentos[1][i]['epocas'],  # Êpocas para TDNN 2
+            resultados_treinamentos[2][i]['mse'],  # E_M para TDNN 3
+            resultados_treinamentos[2][i]['epocas'],  # Êpocas para TDNN 3
+        ]
+        dados.append(linha)
+
+    # Exibir a tabela
+    print("\n\n                             TDNN 1                          TDNN 2                          TDNN 3           ")    
+    print(tabulate(dados, headers=headers, tablefmt="pretty", stralign="center"))
+    
+    
+# def exibir_resultados_validacao(X_teste, Y_teste, resultados_validacao):
+    
+#     headers = ["Amostras", "x(t)", "(T1)", "(T2)", "(T3)", "(T1)", "(T2)", "(T3)", "(T1)", "(T2)", "(T3)"]
+#     subheaders = ["", "", "TDNN 1", "", "", "TDNN 2", "", "", "TDNN 3", "", ""]
+
+#     dados = []
+#     for i in range(len(X_teste)):  # Para cada amostra
+#         linha = [
+#             f"t = {101 + i}",  # Número da amostra
+#             X_teste[i][0],  # Valor de x(t)
+#             resultados_validacao[0][0][0][i][0],  # Previsão TDNN 1 (T1)
+#             resultados_validacao[0][1][0][i][0],  # Previsão TDNN 1 (T2)
+#             resultados_validacao[0][2][0][i][0],  # Previsão TDNN 1 (T3)
+#             resultados_validacao[1][0][0][i][0],  # Previsão TDNN 2 (T1)
+#             resultados_validacao[1][1][0][i][0],  # Previsão TDNN 2 (T2)
+#             resultados_validacao[1][2][0][i][0],  # Previsão TDNN 2 (T3)
+#             resultados_validacao[2][0][0][i][0],  # Previsão TDNN 3 (T1)
+#             resultados_validacao[2][1][0][i][0],  # Previsão TDNN 3 (T2)
+#             resultados_validacao[2][2][0][i][0],  # Previsão TDNN 3 (T3)
+#         ]
+#         dados.append(linha)
+
+#     # Adicionar métricas (erro relativo médio e variância)
+#     linha_erro_medio = ["Erro relativo médio (%)"] + [""] + [
+#         f"{resultados_validacao[0][0][1]:.4f}",  # TDNN 1 (T1)
+#         f"{resultados_validacao[0][1][1]:.4f}",  # TDNN 1 (T2)
+#         f"{resultados_validacao[0][2][1]:.4f}",  # TDNN 1 (T3)
+#         f"{resultados_validacao[1][0][1]:.4f}",  # TDNN 2 (T1)
+#         f"{resultados_validacao[1][1][1]:.4f}",  # TDNN 2 (T2)
+#         f"{resultados_validacao[1][2][1]:.4f}",  # TDNN 2 (T3)
+#         f"{resultados_validacao[2][0][1]:.4f}",  # TDNN 3 (T1)
+#         f"{resultados_validacao[2][1][1]:.4f}",  # TDNN 3 (T2)
+#         f"{resultados_validacao[2][2][1]:.4f}",  # TDNN 3 (T3)
+#     ]
+#     dados.append(linha_erro_medio)
+
+#     linha_variancia = ["Variância (%)"] + [""] + [
+#         f"{resultados_validacao[0][0][2]:.4f}",  # TDNN 1 (T1)
+#         f"{resultados_validacao[0][1][2]:.4f}",  # TDNN 1 (T2)
+#         f"{resultados_validacao[0][2][2]:.4f}",  # TDNN 1 (T3)
+#         f"{resultados_validacao[1][0][2]:.4f}",  # TDNN 2 (T1)
+#         f"{resultados_validacao[1][1][2]:.4f}",  # TDNN 2 (T2)
+#         f"{resultados_validacao[1][2][2]:.4f}",  # TDNN 2 (T3)
+#         f"{resultados_validacao[2][0][2]:.4f}",  # TDNN 3 (T1)
+#         f"{resultados_validacao[2][1][2]:.4f}",  # TDNN 3 (T2)
+#         f"{resultados_validacao[2][2][2]:.4f}",  # TDNN 3 (T3)
+#     ]
+#     dados.append(linha_variancia)
+
+#     # Exibir a tabela
+#     print("\n\n                                                                TDNN 1                                                                 TDNN 2                                                                   TDNN 3                                   ")
+#     print(tabulate(dados, headers=headers, tablefmt="pretty", stralign="center", floatfmt=".4f"))
+    
+    
+def exibir_resultados_validacao(X_teste, Y_teste, resultados_validacao):
+    """
+    Exibe os resultados da validação em uma tabela formatada.
+    """
+    headers = ["Amostras", "x(t)", "(T1)", "(T2)", "(T3)", "(T1)", "(T2)", "(T3)", "(T1)", "(T2)", "(T3)"]
+    subheaders = ["", "", "TDNN 1", "", "", "TDNN 2", "", "", "TDNN 3", "", ""]
+
+    dados = []
+    for i in range(len(X_teste)):  # Para cada amostra
+        linha = [
+            f"t = {101 + i}",  # Número da amostra
+            X_teste[i][0],  # Valor de x(t)
+            resultados_validacao[0][0][0][i][0],  # Previsão TDNN 1 (T1)
+            resultados_validacao[0][1][0][i][0],  # Previsão TDNN 1 (T2)
+            resultados_validacao[0][2][0][i][0],  # Previsão TDNN 1 (T3)
+            resultados_validacao[1][0][0][i][0],  # Previsão TDNN 2 (T1)
+            resultados_validacao[1][1][0][i][0],  # Previsão TDNN 2 (T2)
+            resultados_validacao[1][2][0][i][0],  # Previsão TDNN 2 (T3)
+            resultados_validacao[2][0][0][i][0],  # Previsão TDNN 3 (T1)
+            resultados_validacao[2][1][0][i][0],  # Previsão TDNN 3 (T2)
+            resultados_validacao[2][2][0][i][0],  # Previsão TDNN 3 (T3)
+        ]
+        dados.append(linha)
+
+    # Adicionar métricas (erro relativo médio e variância)
+    linha_erro_medio = ["Erro relativo médio (%)"] + [""] + [
+        f"{resultados_validacao[0][0][1]:.4f}",  # TDNN 1 (T1)
+        f"{resultados_validacao[0][1][1]:.4f}",  # TDNN 1 (T2)
+        f"{resultados_validacao[0][2][1]:.4f}",  # TDNN 1 (T3)
+        f"{resultados_validacao[1][0][1]:.4f}",  # TDNN 2 (T1)
+        f"{resultados_validacao[1][1][1]:.4f}",  # TDNN 2 (T2)
+        f"{resultados_validacao[1][2][1]:.4f}",  # TDNN 2 (T3)
+        f"{resultados_validacao[2][0][1]:.4f}",  # TDNN 3 (T1)
+        f"{resultados_validacao[2][1][1]:.4f}",  # TDNN 3 (T2)
+        f"{resultados_validacao[2][2][1]:.4f}",  # TDNN 3 (T3)
+    ]
+    dados.append(linha_erro_medio)
+
+    linha_variancia = ["Variância (%)"] + [""] + [
+        f"{resultados_validacao[0][0][2]:.4f}",  # TDNN 1 (T1)
+        f"{resultados_validacao[0][1][2]:.4f}",  # TDNN 1 (T2)
+        f"{resultados_validacao[0][2][2]:.4f}",  # TDNN 1 (T3)
+        f"{resultados_validacao[1][0][2]:.4f}",  # TDNN 2 (T1)
+        f"{resultados_validacao[1][1][2]:.4f}",  # TDNN 2 (T2)
+        f"{resultados_validacao[1][2][2]:.4f}",  # TDNN 2 (T3)
+        f"{resultados_validacao[2][0][2]:.4f}",  # TDNN 3 (T1)
+        f"{resultados_validacao[2][1][2]:.4f}",  # TDNN 3 (T2)
+        f"{resultados_validacao[2][2][2]:.4f}",  # TDNN 3 (T3)
+    ]
+    dados.append(linha_variancia)
+
+    # Exibir a tabela
+    print(tabulate(dados, headers=headers, tablefmt="pretty", stralign="center", floatfmt=".4f"))
+    
+    
+    
+def plotar_erro_quadratico_medio(resultados_treinamentos):
+    plt.figure(figsize=(12, 8))
+    
+    for idx_tdnn, resultados_tdnn in enumerate(resultados_treinamentos):
+        # Selecionar o melhor treinamento (menor MSE final)
+        melhor_treinamento = min(resultados_tdnn, key=lambda x: x['mse'])
+        erros_em = melhor_treinamento['erros_em']
+        
+        # Plotar o gráfico
+        plt.subplot(3, 1, idx_tdnn + 1)
+        plt.plot(erros_em, label=f'TDNN {idx_tdnn + 1}')
+        plt.title(f'Erro Quadrático Médio vs Épocas - TDNN {idx_tdnn + 1}')
+        plt.xlabel('Épocas')
+        plt.ylabel('Erro Quadrático Médio (EM)')
+        plt.legend()
+        plt.grid(True)
+    
+    plt.tight_layout()
+    plt.show()
+    
+    
+    
+# Função para plotar os gráficos
+def plotar_valores_desejados_vs_estimados(X_teste, Y_teste, resultados_validacao):
+    plt.figure(figsize=(12, 8))
+    
+    for idx_tdnn, validacao_tdnn in enumerate(resultados_validacao):
+        # Selecionar o melhor treinamento (menor erro relativo médio)
+        melhor_treinamento = min(validacao_tdnn, key=lambda x: x[1])
+        Y_pred = melhor_treinamento[0]
+        
+        # Plotar o gráfico
+        plt.subplot(3, 1, idx_tdnn + 1)
+        plt.plot(range(101, 121), Y_teste, label='Valores Desejados', marker='o')
+        plt.plot(range(101, 121), Y_pred, label='Valores Estimados', marker='x')
+        plt.title(f'Valores Desejados vs Estimados - TDNN {idx_tdnn + 1}')
+        plt.xlabel('t')
+        plt.ylabel('Valores')
+        plt.legend()
+        plt.grid(True)
+    
+    plt.tight_layout()
+    plt.show()
