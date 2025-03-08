@@ -1,5 +1,8 @@
 import numpy as np
-
+import pandas as pd
+from tabulate import tabulate
+from sklearn.cluster import KMeans
+from sklearn.preprocessing import StandardScaler
 
 def load_data(file_path):
     with open(file_path, 'r') as file:
@@ -23,3 +26,18 @@ def load_data(file_path):
         Y = data.reshape(-1, 1)
         
     return X, Y
+
+# Função de ativação (função degrau)
+def step_function(z):
+    return np.where(z >= 0, 1, -1)
+
+# Função para calcular a saída da rede
+def predict(X, weights, bias):
+    z = np.dot(X, weights) + bias
+    return step_function(z)
+
+
+# Função sinal para pós-processamento
+def sinal(y):
+    return np.where(y >= 0, 1, -1)
+
